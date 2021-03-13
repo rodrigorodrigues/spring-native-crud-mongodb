@@ -13,7 +13,9 @@ services:
 
   spring-native-crud-mongodb:
     image: spring-native-crud-mongodb:0.0.1-SNAPSHOT
-    environment: 
+    ports:
+      - 8080:8080
+    environment:
       - SPRING_DATA_MONGODB_HOST=mongo
     networks:
       net:
