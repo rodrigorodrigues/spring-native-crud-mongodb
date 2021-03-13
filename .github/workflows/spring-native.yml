@@ -38,8 +38,8 @@ jobs:
       - name: Install native-image component(amd64)
         run: |
           sudo chmod -R a+rwx graalvm/
-          graalvm/bin/gu install native-image
-          graalvm/bin/native-image --version
+#          graalvm/bin/gu install native-image
+#          graalvm/bin/native-image --version
 
       # Build the Docker image with Maven
       - name: Build Docker Image(amd64)
@@ -84,8 +84,8 @@ jobs:
       - name: Install native-image component(aarch64)
         run: |
           sudo chmod -R a+rwx graalvm/
-          graalvm/bin/gu install native-image
-          graalvm/bin/native-image --version
+#          graalvm/bin/gu install native-image
+#          graalvm/bin/native-image --version
 
       # Build the Docker image with Maven
       - name: Build Docker Image(aarch64)
