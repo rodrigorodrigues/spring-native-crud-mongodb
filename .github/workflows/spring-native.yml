@@ -37,6 +37,7 @@ jobs:
 
       - name: Install native-image component(amd64)
         run: |
+          chmod -R a+rwx graalvm/
           graalvm/bin/gu install native-image
           graalvm/bin/native-image --version
 
@@ -63,15 +64,33 @@ jobs:
         with:
           args: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.0.0.2/graalvm-ce-java11-linux-aarch64-21.0.0.2.tar.gz
 
+      # Run commands on aarch64
+      - name: Run on aarch64
+        uses: uraimo/run-on-arch-action@v2.0.9
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu20.04
+
+          # Not required, but speeds up builds by storing container images in
+          # a GitHub package registry.
+          githubToken: ${{ github.token }}
+
+          # Set an output parameter `uname` for use in subsequent steps
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+
+      - name: Install native-image component(aarch64)
+        run: |
+          chmod -R a+rwx graalvm/
+          graalvm/bin/gu install native-image
+          graalvm/bin/native-image --version
+
       # Build the Docker image with Maven
       - name: Build Docker Image(aarch64)
         run: |
            mvn spring-boot:build-image -q -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
-      - name: Install native-image component(aarch64)
-        run: |
-          graalvm/bin/gu install native-image
-          graalvm/bin/native-image --version
 
       # Build the Docker image with Maven
       - name: Build Docker Image
