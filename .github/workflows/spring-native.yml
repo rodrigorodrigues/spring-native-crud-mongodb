@@ -37,7 +37,7 @@ jobs:
 
       - name: Install native-image component(amd64)
         run: |
-          chmod -R a+rwx graalvm/
+          sudo chmod -R a+rwx graalvm/
           graalvm/bin/gu install native-image
           graalvm/bin/native-image --version
 
@@ -83,7 +83,7 @@ jobs:
 
       - name: Install native-image component(aarch64)
         run: |
-          chmod -R a+rwx graalvm/
+          sudo chmod -R a+rwx graalvm/
           graalvm/bin/gu install native-image
           graalvm/bin/native-image --version
 
