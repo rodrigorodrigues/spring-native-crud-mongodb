@@ -14,7 +14,9 @@ To run the code locally you can use `./build.sh` but need `GraalVM native-image`
 ### Build on Raspberry Pi 4(AARCH64)
 
 To install GraalVM on Pi follow this link https://github.com/dongjinleekr/graalvm-ce-deb
+
 To install Maven https://xianic.net/2015/02/21/installing-maven-on-the-raspberry-pi/
+
 To set GraalVM as default java version use the following commands:
 ```
 sudo update-alternatives --install /usr/bin/java java /your_path/graalvm-ce-deb/graalvm-ce-java11_aarch64_21.0.0.2/usr/lib/jvm/graalvm-ce-java11/bin/java 1
