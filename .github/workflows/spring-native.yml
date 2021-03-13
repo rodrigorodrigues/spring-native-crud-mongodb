@@ -1,0 +1,56 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Spring Native - Build docker image for AMD64 and AARCH64
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    name: Build Jar/Docker Image and Publish to DockerHub
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Set up JDK 11
+      - name: JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: setup-graalvm
+        uses: rtc11/setup-graalvm@master
+        with:
+          args: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.0.0.2/graalvm-ce-java11-linux-aarch64-21.0.0.2.tar.gz
+
+      - name: Install native-image component
+        run: |
+          gu install native-image
+
+      # Login to Dockerhub
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build the Docker image with Maven
+      - name: Build Docker Image
+        run: |
+           mvn spring-boot:build-image -q -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+
+      # Push the Docker image
+      - name: Push
+        run: |
+          docker push fielcapao/spring-native-crud-mongodb-aarch64
