@@ -36,8 +36,9 @@ jobs:
 
       - name: Install native-image component
         run: |
-          $GRAALVM_HOME/bin/gu install native-image
-          $GRAALVM_HOME/bin/native-image --version
+          ls -al graalvm/
+          graalvm//bin/gu install native-image
+          graalvm//bin/native-image --version
 
       # Login to Dockerhub
       - name: Login to DockerHub
