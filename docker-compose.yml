@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   mongo:
-    image: mongo:4.2
+    image: mongo:4.2 #Use arm64v8/mongo for raspberry pi 4(aarch64)
     ports:
       - 27017:27017
     # volumes:
