@@ -13,7 +13,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     if: contains(toJson(github), 'build docker-image')
-    name: Build Jar/Docker Image and Publish to DockerHub
+    name: Build and Publish Docker images to DockerHub
 
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -31,20 +31,19 @@ jobs:
           java-version: 11
 
       - name: Setup Graalvm(amd64)
-        uses: rtc11/setup-graalvm@master
+        uses: DeLaGuardo/setup-graalvm@master
         with:
-          args: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.0.0.2/graalvm-ce-java11-linux-amd64-21.0.0.2.tar.gz
+          graalvm-version: '21.0.0.2.java11'
+#          args: https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-21.0.0.2/graalvm-ce-java11-linux-amd64-21.0.0.2.tar.gz
 
       - name: Install native-image component(amd64)
         run: |
-          sudo chmod -R a+rwx graalvm/
-#          graalvm/bin/gu install native-image
-#          graalvm/bin/native-image --version
+          gu install native-image
 
       # Build the Docker image with Maven
       - name: Build Docker Image(amd64)
         run: |
-           mvn spring-boot:build-image -q -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+           mvn clean install spring-boot:build-image -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       # Login to Dockerhub
       - name: Login to DockerHub
@@ -56,8 +55,8 @@ jobs:
       # Push the Docker image amd64
       - name: Push
         run: |
+          docker tag spring-native-crud-mongodb:0.0.1-SNAPSHOT fielcapao/spring-native-crud-mongodb-amd64
           docker push fielcapao/spring-native-crud-mongodb-amd64
-          rm -rf graalvm
 
       - name: Setup Graalvm(aarch64)
         uses: rtc11/setup-graalvm@master
@@ -90,14 +89,10 @@ jobs:
       # Build the Docker image with Maven
       - name: Build Docker Image(aarch64)
         run: |
-           mvn spring-boot:build-image -q -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-
-      # Build the Docker image with Maven
-      - name: Build Docker Image
-        run: |
-           mvn spring-boot:build-image -q -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+           mvn clean install docker:build -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       # Push the Docker image aarch64
       - name: Push
         run: |
+          docker tag spring-native-crud-mongodb:0.0.1-SNAPSHOT fielcapao/spring-native-crud-mongodb-aarch64
           docker push fielcapao/spring-native-crud-mongodb-aarch64
