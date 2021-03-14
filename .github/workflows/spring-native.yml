@@ -43,7 +43,7 @@ jobs:
       # Build the Docker image with Maven
       - name: Build Docker Image(amd64)
         run: |
-           mvn clean install spring-boot:build-image -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+           mvn clean install spring-boot:build-image -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       # Login to Dockerhub
       - name: Login to DockerHub
@@ -55,8 +55,8 @@ jobs:
       # Push the Docker image amd64
       - name: Push
         run: |
+          docker tag spring-native-crud-mongodb:0.0.1-SNAPSHOT fielcapao/spring-native-crud-mongodb-amd64
           docker push fielcapao/spring-native-crud-mongodb-amd64
-          rm -rf graalvm
 
       - name: Setup Graalvm(aarch64)
         uses: rtc11/setup-graalvm@master
@@ -94,4 +94,5 @@ jobs:
       # Push the Docker image aarch64
       - name: Push
         run: |
+          docker tag spring-native-crud-mongodb:0.0.1-SNAPSHOT fielcapao/spring-native-crud-mongodb-aarch64
           docker push fielcapao/spring-native-crud-mongodb-aarch64
