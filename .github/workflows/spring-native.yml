@@ -43,7 +43,7 @@ jobs:
       # Build the Docker image with Maven
       - name: Build Docker Image(amd64)
         run: |
-           mvn spring-boot:build-image -q -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+           mvn clean install spring-boot:build-image -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       # Login to Dockerhub
       - name: Login to DockerHub
@@ -89,7 +89,7 @@ jobs:
       # Build the Docker image with Maven
       - name: Build Docker Image(aarch64)
         run: |
-           mvn clean install -DskipTests docker:build -q -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+           mvn clean install docker:build -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
       # Push the Docker image aarch64
       - name: Push
