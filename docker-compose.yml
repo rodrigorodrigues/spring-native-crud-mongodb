@@ -2,6 +2,7 @@ version: '3.2'
 services:
   mongo:
     image: mongo:4.2 #Use arm64v8/mongo for raspberry pi 4(aarch64)
+    container_name: mongo
     ports:
       - 27017:27017
     # volumes:
@@ -12,7 +13,8 @@ services:
           - mongo
 
   spring-native-crud-mongodb:
-    image: spring-native-crud-mongodb:0.0.1-SNAPSHOT #fielcapao/spring-native-crud-mongodb-amd64 #To run local version use spring-native-crud-mongodb:0.0.1-SNAPSHOT
+    image: fielcapao/spring-native-crud-mongodb-amd64 #To run local version use spring-native-crud-mongodb:0.0.1-SNAPSHOT
+    container_name: spring-native-crud-mongodb
     ports:
       - 8080:8080
     environment:

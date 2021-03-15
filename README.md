@@ -11,6 +11,8 @@ To run with docker use `docker-compose up` or executable `target/spring-native-c
 
 To run the code locally you can use `./build.sh` but need `GraalVM native-image` installed follow documentation at https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#getting-started-native-image
 
+To use [GraalVM Plugin](https://www.graalvm.org/reference-manual/native-image/NativeImageMavenPlugin/) and generate executable program run `mvn clean package -Pnative-image`
+
 ### Build on Raspberry Pi 4(aarch64)
 
 To install GraalVM on Pi follow this link https://github.com/dongjinleekr/graalvm-ce-deb
@@ -30,7 +32,7 @@ java -version
 >OpenJDK 64-Bit Server VM GraalVM CE 21.0.0.2 (build 11.0.10+8-jvmci-21.0-b06, mixed mode)
 
 #Build native image - tests are not passing cause of embedded mongodb
-mvn clean package -DskipTests -Pnative-image
+mvn clean install -DskipTests docker:build
 ```
 
 PS: `GraalVM AARCH64` is under development more details look at [GraalVM Documentation](https://www.graalvm.org/docs/introduction/)
